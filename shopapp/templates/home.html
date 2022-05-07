@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1 id="title">shopping lists:</h1>
+    {% if shoplists %}
+        {% for shoplist in shoplists %}
+        <div id="shoplist">
+            <h3>{{ shoplist.name }}</h3>
+            <h4>products:</h4>
+            {% if shoplist.products %}
+                {% for product in shoplist.products %}
+                <div id="product">
+                    {{ product.name }}
+                    <input type="checkbox">
+                    <a href ="{{ url_for('delete_product_from_list', name=shoplist.name, product_name=product.name) }}" id="delete"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+                {% endfor %}
+            {% else %}
+                no products
+            {% endif %} 
+            <div>
+                <form action="{{url_for('add_product_to_list', name=shoplist.name)}}", method='POST' style="margin-top: 5px;">
+                    <input type="text" name="new_product">
+                    <input type="submit" value="add product">
+                </form>
+            </div>
+            <br>
+            <div>
+                <a href ="{{ url_for('delete_shoplist', name=shoplist.name) }}" id="delete">delete list</a>
+            </div>
+        </div>
+        <br>
+        {% endfor %}
+    {% else %}
+        <p>no shopping lists</p>
+    {% endif %}
+    <br>
+    <a href="{{ url_for('create_shoplist') }}">new list</a>
+
+{% endblock content %}
+
+
+
